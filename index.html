@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <!-- Optional CSS (safe to remove if unused)
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/leaflet.photon.css">
+    -->
+
+    <style>
+      html, body, #map {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .leaflet-control-layers {
+        background: #fff;
+      }
+	.leaflet-control-layers-toggle { 
+	  display: none !important; 
+	}
+
+	.leaflet-control-layers-list::before {
+	  content: "Layer List";
+	  display: block;
+		font-size: 20px;
+	  text-align: center;
+	  font-weight: bold;
+	  padding: 6px 0;
+	  border-bottom: 1px solid #ccc;
+	  margin-bottom: 4px;
+	}
+	.leaflet-control-layers-list b {
+		font-size: 17px;
+		padding-right: 4px;
+	}
+	.leaflet-control-layers-list {
+		font-size: 15px;
+	}
+
+
+
+      .leaflet-bar.custom-opacity {
+        background: #f7f7f7;
+        border: 1px solid #ccc !important;
+        box-shadow: 0 3px 14px rgba(0,0,0,0.4);
+        padding: 8px;
+	background-clip: padding-box;
+      }
+
+      .custom-opacity label {
+        display: block;
+        font-size: 17px;
+	font-family: Arial;
+        margin-bottom: 4px;
+	text-align: center;
+	font-color: #454545;
+      }
+	.leaflet-control-scale {
+		font-size: 14px;
+		text-align: center;
+	}
+	
+    </style>
+
+    <title>Plattsburg Sanborn Maps</title>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <!-- Required JS -->
+    <script src="js/leaflet.js"></script>
+    <script src="js/L.Control.Layers.Tree.min.js"></script>
+
+    <!-- Optional (kept as comments for later use)
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet.photon.js"></script>
+    <script src="js/qgis2web_expressions.js"></script>
+    -->
+
+    <script>
+      // Map
+      var map = L.map('map', {
+        zoomControl: false, 
+	maxZoom: 21, 
+	minZoom: 14,
+	scrollWheelZoom: true,
+	doubleClickZoom: false,
+	boxZoom: false
+      }).fitBounds([[39.5607872729159,-94.45923933549471],[39.57028206826819,-94.4422116074056]]);
+
+      map.attributionControl.setPrefix(
+	'Library of Congress &middot; '+
+        '<a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; ' +
+        '<a href="https://qgis.org">QGIS</a>'
+      );
+
+
+      var bounds_group = new L.featureGroup([]);
+      function setBounds() {}
+
+      // Basemap
+      map.createPane('pane_OSMStandard_0');
+      map.getPane('pane_OSMStandard_0').style.zIndex = 400;
+
+      var layer_OSMStandard_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        pane: 'pane_OSMStandard_0',
+        opacity: 1.0,
+        attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+        minZoom: 1,
+        maxZoom: 28,
+        minNativeZoom: 0,
+        maxNativeZoom: 19
+      }).addTo(map);
+
+      // Sanborn overlays (image overlays)
+map.createPane('pane_1949_1');
+map.getPane('pane_1949_1').style.zIndex = 401;
+const bounds_1949 = L.latLngBounds(
+	[39.560695454152814,-94.45899382403627],
+	[39.573009819427725,-94.43076394248952]
+);
+var layer_1949_1 = L.tileLayer('tile_1949/{z}/{x}/{y}.png', {
+  pane: 'pane_1949_1',
+  minZoom: 14,
+  maxNativeZoom: 21,
+  maxZoom: 21
+});
+
+
+map.createPane('pane_1926_2');
+map.getPane('pane_1926_2').style.zIndex = 402;
+const bounds_1926 = L.latLngBounds(
+  [39.56059065489672, -94.45875104480398],
+  [39.572719615062105, -94.43209970222466]
+);
+var layer_1926_2 = L.tileLayer('tile_1926/{z}/{x}/{y}.png', {
+  pane: 'pane_1926_2',
+  minZoom: 14,
+  maxNativeZoom: 21,
+  maxZoom: 21
+});
+
+map.createPane('pane_1909_3');
+map.getPane('pane_1909_3').style.zIndex = 403;
+const bounds_1909 = L.latLngBounds(
+  [39.561925264293905, -94.45695007217769],
+  [39.57200851290237, -94.43222799175692]
+);
+var layer_1909_3 = L.tileLayer('tile_1909/{z}/{x}/{y}.png', {
+  pane: 'pane_1909_3',
+  minZoom: 14,
+  maxNativeZoom: 21,
+  maxZoom: 21
+});
+
+map.createPane('pane_1898_4');
+map.getPane('pane_1898_4').style.zIndex = 404;
+const bounds_1898 = L.latLngBounds(
+	[39.56338347360567,-94.45695998467566],
+	[39.568421039381896,-94.44583091187936]
+);
+
+var layer_1898_4 = L.tileLayer('tile_1898/{z}/{x}/{y}.png', {
+  pane: 'pane_1898_4',
+  minZoom: 14,
+  maxNativeZoom: 21,
+  maxZoom: 21
+});
+
+map.createPane('pane_1892_5');
+map.getPane('pane_1892_5').style.zIndex = 405;
+const bounds_1892 = L.latLngBounds(
+	[39.56371557675242,-94.45703088520368],
+	[39.56738562636104,-94.44607241675197]
+);
+
+var layer_1892_5 = L.tileLayer('tile_1892/{z}/{x}/{y}.png', {
+  pane: 'pane_1892_5',
+  minZoom: 14,
+  maxNativeZoom: 21,
+  maxZoom: 21
+});
+
+map.createPane('pane_1886_6');
+map.getPane('pane_1886_6').style.zIndex = 406;
+const bounds_1886 = L.latLngBounds(
+	[39.563689813712166,-94.4570408553624],
+	[39.56899623506435,-94.44618132006528]
+);
+
+var layer_1886_6 = L.tileLayer('tile_1886/{z}/{x}/{y}.png', {
+  pane: 'pane_1886_6',
+  minZoom: 14,
+  maxNativeZoom: 21,
+  maxZoom: 21
+});
+      // Default visible year
+      map.addLayer(layer_1886_6);
+
+      // Layer tree
+      var overlaysTree = [
+        { label: '<b>Sanborn Maps</b>', selectAllCheckbox: false, children: [
+          { label: '1886', layer: layer_1886_6, radioGroup: 'sanborn' },
+          { label: '1892', layer: layer_1892_5, radioGroup: 'sanborn' },
+          { label: '1898', layer: layer_1898_4, radioGroup: 'sanborn' },
+          { label: '1909', layer: layer_1909_3, radioGroup: 'sanborn' },
+          { label: '1926', layer: layer_1926_2, radioGroup: 'sanborn' },
+          { label: '1949', layer: layer_1949_1, radioGroup: 'sanborn' }
+        ]},
+      ];
+
+      var lay = L.control.layers.tree(
+        null,
+        overlaysTree,
+        {
+          namedToggle: false,
+          collapsed: false
+        }
+      );
+      lay.addTo(map);
+
+const ctl = document.querySelector('.leaflet-control-layers');
+if (ctl) ctl.classList.add('leaflet-control-layers-expanded');
+      // Layer list sizing + mobile behavior
+      document.addEventListener("DOMContentLoaded", function() {
+        function newLayersListHeight() {
+          var sb = document.querySelector('.leaflet-control-layers-scrollbar');
+          if (sb) {
+            var list = document.querySelector('.leaflet-control-layers-list');
+            var originalHeight = list.style.height || window.getComputedStyle(list).height;
+            var newHeight = parseFloat(originalHeight) - 50;
+            list.style.height = newHeight + 'px';
+          }
+        }
+        var isLayersListExpanded = true;
+        var ctl = document.querySelector('.leaflet-control-layers');
+        var toggle = document.querySelector('.leaflet-control-layers-toggle');
+
+        if (toggle) {
+          toggle.addEventListener('click', function() {
+            if (isLayersListExpanded) {
+              ctl.classList.remove('leaflet-control-layers-expanded');
+            } else {
+              ctl.classList.add('leaflet-control-layers-expanded');
+            }
+            isLayersListExpanded = !isLayersListExpanded;
+            newLayersListHeight();
+          });
+        }
+
+        if (ctl) {
+          ctl.addEventListener('click', function(event) {
+            var pointer = event.target.closest('.leaflet-layerstree-header-pointer span');
+            if (pointer) newLayersListHeight();
+          });
+        }
+
+        var isSmall = window.innerWidth < 650;
+        if (isSmall) {
+          setTimeout(function() {
+            ctl.classList.remove('leaflet-control-layers-expanded');
+            isLayersListExpanded = !isLayersListExpanded;
+          }, 500);
+        }
+      });
+
+// Opacity control 
+      const sanbornLayers = new Set([ 
+	layer_1886_6, 
+	layer_1892_5, 
+	layer_1898_4, 
+	layer_1909_3, 
+	layer_1926_2, 
+	layer_1949_1 ]);
+
+      let currentOverlay = layer_1886_6;
+
+
+      const opacityCtl = L.control({ position: 'topright' });
+      opacityCtl.onAdd = function () {
+        const div = L.DomUtil.create('div', 'leaflet-bar custom-opacity');
+        L.DomEvent.disableClickPropagation(div);
+
+        const label = document.createElement('label');
+        label.textContent = 'Opacity Slider';
+
+        const slider = document.createElement('input');
+        slider.type = 'range';
+        slider.min = '0';
+        slider.max = '1';
+        slider.step = '0.05';
+        slider.value = currentOverlay.options.opacity ?? 1;
+        slider.addEventListener('input', function () {
+          if (currentOverlay && currentOverlay.setOpacity) {
+            currentOverlay.setOpacity(parseFloat(slider.value));
+          }
+        });
+
+        div.appendChild(label);
+        div.appendChild(slider);
+        return div;
+      };
+      opacityCtl.addTo(map);
+	L.control.scale({ metric: false, imperial: true, position: 'topright',}).addTo(map);
+      	L.control.zoom({ position: 'topright' }).addTo(map);
+
+const allSanborn = new Set([layer_1886_6, layer_1892_5, layer_1898_4, layer_1909_3, layer_1926_2, layer_1949_1]);
+map.on('overlayadd', function(e){
+  if (allSanborn.has(e.layer)) {
+    currentOverlay = e.layer; 
+  }
+});
+      setBounds();
+
+      // Helper (qgis2web compatibility)
+      L.ImageOverlay.include({
+        getBounds: function () { return this._bounds; }
+      });
+    </script>
+  </body>
+</html>
