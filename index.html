@@ -48,8 +48,6 @@
 		font-size: 15px;
 	}
 
-
-
       .leaflet-bar.custom-opacity {
         background: #f7f7f7;
         border: 1px solid #ccc !important;
@@ -66,6 +64,7 @@
 	text-align: center;
 	font-color: #454545;
       }
+		
 	.leaflet-control-scale {
 		font-size: 14px;
 		text-align: center;
@@ -82,7 +81,7 @@
     <script src="js/leaflet.js"></script>
     <script src="js/L.Control.Layers.Tree.min.js"></script>
 
-    <!-- Optional (kept as comments for later use)
+    <!-- Optional if its only going to show Sanborns
     <script src="js/leaflet.rotatedMarker.js"></script>
     <script src="js/leaflet.pattern.js"></script>
     <script src="js/Autolinker.min.js"></script>
@@ -121,7 +120,7 @@
       var layer_OSMStandard_0 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         pane: 'pane_OSMStandard_0',
         opacity: 1.0,
-        attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors, CC-BY-SA</a>',
+        attribution: '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap </a>',
         minZoom: 1,
         maxZoom: 28,
         minNativeZoom: 0,
@@ -135,11 +134,12 @@ const bounds_1949 = L.latLngBounds(
 	[39.560695454152814,-94.45899382403627],
 	[39.573009819427725,-94.43076394248952]
 );
-var layer_1949_1 = L.tileLayer('tile_1949/{z}/{x}/{y}.png', {
+var layer_1949_1 = L.tileLayer('https://storage.googleapis.com/plattsburg-sanborns/tile_1949/{z}/{x}/{y}.png', {
   pane: 'pane_1949_1',
   minZoom: 14,
   maxNativeZoom: 21,
   maxZoom: 21
+	// , tms: false
 });
 
 
@@ -149,11 +149,12 @@ const bounds_1926 = L.latLngBounds(
   [39.56059065489672, -94.45875104480398],
   [39.572719615062105, -94.43209970222466]
 );
-var layer_1926_2 = L.tileLayer('tile_1926/{z}/{x}/{y}.png', {
+var layer_1926_2 = L.tileLayer('https://storage.googleapis.com/plattsburg-sanborns/tile_1926/{z}/{x}/{y}.png', {
   pane: 'pane_1926_2',
   minZoom: 14,
   maxNativeZoom: 21,
   maxZoom: 21
+	// , tms: false
 });
 
 map.createPane('pane_1909_3');
@@ -162,11 +163,12 @@ const bounds_1909 = L.latLngBounds(
   [39.561925264293905, -94.45695007217769],
   [39.57200851290237, -94.43222799175692]
 );
-var layer_1909_3 = L.tileLayer('tile_1909/{z}/{x}/{y}.png', {
+var layer_1909_3 = L.tileLayer('https://storage.googleapis.com/plattsburg-sanborns/tile_1909/{z}/{x}/{y}.png', {
   pane: 'pane_1909_3',
   minZoom: 14,
   maxNativeZoom: 21,
   maxZoom: 21
+	// , tms: false
 });
 
 map.createPane('pane_1898_4');
@@ -176,11 +178,12 @@ const bounds_1898 = L.latLngBounds(
 	[39.568421039381896,-94.44583091187936]
 );
 
-var layer_1898_4 = L.tileLayer('tile_1898/{z}/{x}/{y}.png', {
+var layer_1898_4 = L.tileLayer('https://storage.googleapis.com/plattsburg-sanborns/tile_1898/{z}/{x}/{y}.png', {
   pane: 'pane_1898_4',
   minZoom: 14,
   maxNativeZoom: 21,
   maxZoom: 21
+	// , tms: false
 });
 
 map.createPane('pane_1892_5');
@@ -190,11 +193,12 @@ const bounds_1892 = L.latLngBounds(
 	[39.56738562636104,-94.44607241675197]
 );
 
-var layer_1892_5 = L.tileLayer('tile_1892/{z}/{x}/{y}.png', {
+var layer_1892_5 = L.tileLayer('https://storage.googleapis.com/plattsburg-sanborns/tile_1892/{z}/{x}/{y}.png', {
   pane: 'pane_1892_5',
   minZoom: 14,
   maxNativeZoom: 21,
   maxZoom: 21
+		// , tms: false
 });
 
 map.createPane('pane_1886_6');
@@ -204,11 +208,12 @@ const bounds_1886 = L.latLngBounds(
 	[39.56899623506435,-94.44618132006528]
 );
 
-var layer_1886_6 = L.tileLayer('tile_1886/{z}/{x}/{y}.png', {
+var layer_1886_6 = L.tileLayer('https://storage.googleapis.com/plattsburg-sanborns/tile_1886/{z}/{x}/{y}.png', {
   pane: 'pane_1886_6',
   minZoom: 14,
   maxNativeZoom: 21,
   maxZoom: 21
+		// , tms: false
 });
       // Default visible year
       map.addLayer(layer_1886_6);
